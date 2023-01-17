@@ -6,11 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=David+Libre&family=Indie+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Ready to play some Tic Tac Toe?</h1>
     <button id="newgame" type="button">Start New Game</button>
+    <div id="container-popup">
+        <div id="popup">Select your opponent:
+            <div id="humanopp">Your friend</div>
+            <div id="compopp">A computer</div>
+        </div>
+    </div>
     <div id="gameboard"></div>
+    <div id="winner"></div>
+    <div id="playagain">Play again?</div>
 
 
     <script src="myscripts.js"></script>
