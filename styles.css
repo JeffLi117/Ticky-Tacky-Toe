@@ -1,0 +1,36 @@
+h1 {
+    text-align: center;
+    color: red;
+}
+
+#newgame {
+    display: block;
+    margin: 1rem auto;
+}
+
+
+#gameboard {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(3, calc(65vh/3 - 1rem));
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.2rem;
+}
+
+#display_turns {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 3px solid pink;
+    background-color: rgb(239, 138, 255);
+}
+
+div[id^="tile"] {
+    font-size: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    height: calc(65vh/3 - 1rem);
+    width: calc(65vh/3 - 1rem);
+}
