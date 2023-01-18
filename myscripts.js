@@ -106,9 +106,9 @@ var boxSelectorVar = (function() {
     function selectBox(el) {
         if (el.innerHTML != "") {
             return
-        } else if (player == 'Player 1') {
+        } else if (player == `${Player1.playerName}`) {
             el.innerHTML = "X"
-        } else if (player == 'Player 2') {
+        } else if (player == `${Player2.playerName}`) {
             el.innerHTML = "O"
         }
     }
@@ -132,7 +132,7 @@ var playerTurnKeeper = (function() {
 
     function selectStartingPlayer() {
         var turnBox = document.getElementById("display_turns");
-        player = Math.random() < 0.5 ? 'Player 1' : 'Player 2';
+        player = Math.random() < 0.5 ? `${Player1.playerName}` : `${Player2.playerName}`;
         turnBox.innerHTML = `${player} has the first move!`;
         return player;
     }
@@ -148,10 +148,10 @@ var playerTurnKeeper = (function() {
     function toggleTurn() {
         var turnBox = document.getElementById("display_turns");
 
-        if (player == 'Player 1') {
-            player = 'Player 2'
-        } else if (player == 'Player 2') {
-            player = 'Player 1'
+        if (player == `${Player1.playerName}`) {
+            player = `${Player2.playerName}`
+        } else if (player == `${Player2.playerName}`) {
+            player = `${Player1.playerName}`
         }
 
         turnBox.innerHTML = `It's ${player}'s turn!`;
@@ -178,7 +178,7 @@ var playerTurnKeeper = (function() {
 })();
 
 const Player = function(input_name) {
-    //playerName = prompt("Please enter player name");
+    /* playerName = prompt("Please enter player name"); */
     playerName = input_name
     return {playerName};
 }
@@ -195,9 +195,14 @@ var popupPop = (function() {
         document.getElementById("container-popup").style.display = "inline";
         document.getElementById("popup").style.display = "flex";
     }
+
+    function enteringNamePop() {
+        document.getElementById("enter-names").style.display = "flex";
+    }
     
     return {
         poppity: poppity,
+        enteringNamePop: enteringNamePop,
     }
 })();
 
@@ -236,16 +241,40 @@ var computerRandomChoice = (function() {
 
 let humanOppSelect = document.getElementById("humanopp")
 let compOppSelect = document.getElementById("compopp")
+let twoNamesEnteredStart = document.getElementById("gameon")
 
 humanOppSelect.addEventListener('click', () => {
-    document.getElementById("container-popup").style.display = "none";
-    document.getElementById("popup").style.display = "none";
-    opponent = 'human';
-    gameBoard.displayTiles();
-    Player1 = Player('testname1'); 
-    Player2 = Player('testname2');
-    playerTurnKeeper.selectStartingPlayer();
+    if (document.getElementById("enter-names").style.display == "") {
+        popupPop.enteringNamePop();
+    }
 })
+
+twoNamesEnteredStart.addEventListener('click', () => {
+    var P1name = document.getElementById("P1name").value
+    var P2name = document.getElementById("P2name").value
+    if (P1name == '' || P2name == '') {
+        alert("Please enter names for both players!")
+    } else {
+        Player1 = Player(`${P1name}`);
+        Player2 = Player(`${P2name}`);
+        console.log(Player1.playerName + " vs " + Player2.playerName);
+        document.getElementById("container-popup").style.display = "none";
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("enter-names").style.display == "none";
+        opponent = 'human';
+        gameBoard.displayTiles();
+        playerTurnKeeper.selectStartingPlayer();
+    }
+})
+
+/* function poppity() {
+        document.getElementById("container-popup").style.display = "inline";
+        document.getElementById("popup").style.display = "flex";
+    }
+
+    function enteringNamePop() {
+        popUpForNameEntry.style.display = "inline";
+    } */
 
 compOppSelect.addEventListener('click', () => {
     document.getElementById("container-popup").style.display = "none";
@@ -255,7 +284,6 @@ compOppSelect.addEventListener('click', () => {
     Player1 = Player('testname');
     playerTurnKeeper.selectStartingPlayerComp();
     if (player == 'Computer') {
-        console.log("it's finally working");
         computerRandomChoice.remainingBoxes();
         computerRandomChoice.compRNGSelection();
         playerTurnKeeper.toggleTurnComp();
@@ -315,5 +343,7 @@ boxSelect.addEventListener('click', (e) => {
 let playItAgainBtn = document.getElementById("playagain")
 playItAgainBtn.addEventListener('click', () => {
     gameResetVar.resetGame();
+    document.getElementById("enter-names").style.display = '';
+    document.getElementById("display_turns").innerHTML = '';
     popupPop.poppity();
 })

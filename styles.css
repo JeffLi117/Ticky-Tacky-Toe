@@ -99,6 +99,53 @@ div[id^="tile"] {
     justify-content: center;
 }
 
+#enter-names {
+    display: none;
+    padding: 2rem;
+    width: 40%;
+    height: 40%;
+    background: #f022a8;
+    position: absolute;
+    border-radius: 12px;
+    flex-direction: column;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    text-align: center;
+    font-size: 1.7rem;
+    align-content: center;
+    justify-content: center;
+}
+
+input,
+div #gameon {
+    color: black;
+    padding: 2rem;
+    background: #3571f3;
+    display: flex;
+    border: 1px solid black;
+    border-radius: 12px;
+    margin: auto;
+    text-align: center;
+    font-size: 1.7rem;
+    align-content: center;
+    justify-content: center;
+    height: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#P1name {
+    background-color:rgb(251, 255, 142);
+    max-width: 50%;
+}
+
+#P2name {
+    background-color:rgb(255, 123, 0);
+    max-width: 50%;
+}
+
 #humanopp,
 #compopp {
     margin: 1.5rem;
