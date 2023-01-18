@@ -48,6 +48,15 @@ var gameBoard = (function() {
                 document.getElementById("winner").innerHTML = 
                 `Congratulations, ${player}! You win!`;
                 document.getElementById("playagain").style.display = "flex";
+            } else if (
+                (((T1Contents !== "" && T2Contents !== "") &&
+                (T3Contents !== "" && T4Contents !== "")) &&
+                ((T5Contents !== "" && T6Contents !== "") &&
+                (T7Contents !== "" && T8Contents !== ""))) &&
+                T9Contents !== "") {
+                document.getElementById("winner").innerHTML = 
+                `Looks like it's a tie. Try again!`;
+                document.getElementById("playagain").style.display = "flex";
             }
     }
 
@@ -132,6 +141,7 @@ var playerTurnKeeper = (function() {
         var turnBox = document.getElementById("display_turns");
         player = Math.random() < 0.5 ? 'Player' : 'Computer';
         turnBox.innerHTML = `${player} has the first move!`;
+        console.log(`${player} has the first move! via selectStartingPlayerComp`);
         return player;
     }
 
@@ -212,9 +222,9 @@ var computerRandomChoice = (function() {
     // chooses a random # from the remaining boxes above
     function compRNGSelection() {
         const random = Math.floor(Math.random() * testArray.length);
-        console.log(random);
-        console.table(testArray);
-        console.log(`Computer chose tile ${testArray[random]}!`);
+        /* console.log(random);
+        console.table(testArray); 
+        console.log(`Computer chose tile ${testArray[random]}!`);*/
         document.getElementById(`tile_${testArray[random]}`).innerHTML = "O";
     }
 
@@ -232,8 +242,8 @@ humanOppSelect.addEventListener('click', () => {
     document.getElementById("popup").style.display = "none";
     opponent = 'human';
     gameBoard.displayTiles();
-    Player1 = Player('hi'); 
-    Player2 = Player('no');
+    Player1 = Player('testname1'); 
+    Player2 = Player('testname2');
     playerTurnKeeper.selectStartingPlayer();
 })
 
@@ -242,14 +252,17 @@ compOppSelect.addEventListener('click', () => {
     document.getElementById("popup").style.display = "none";
     opponent = 'computer';
     gameBoard.displayTiles();
-    Player1 = Player('hi');
-    if (playerTurnKeeper.selectStartingPlayerComp() == 'Computer') {
+    Player1 = Player('testname');
+    playerTurnKeeper.selectStartingPlayerComp();
+    if (player == 'Computer') {
+        console.log("it's finally working");
         computerRandomChoice.remainingBoxes();
         computerRandomChoice.compRNGSelection();
         playerTurnKeeper.toggleTurnComp();
-    } else if (playerTurnKeeper.selectStartingPlayerComp() == 'Player') {
-        console.log(player);
-        return player
+    } else if (player == 'Player') {
+        return
+    } else {
+        console.log("This is a big oops")
     }
 })
 
