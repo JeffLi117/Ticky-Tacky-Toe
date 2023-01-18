@@ -72,15 +72,15 @@ var gameResetVar = (function() {
         var Ti8 = document.getElementById("tile_8")
         var Ti9 = document.getElementById("tile_9")
 
-        Ti1.innerHTML = '';
-        Ti2.innerHTML = '';
-        Ti3.innerHTML = '';
-        Ti4.innerHTML = '';
-        Ti5.innerHTML = '';
-        Ti6.innerHTML = '';
-        Ti7.innerHTML = '';
-        Ti8.innerHTML = '';
-        Ti9.innerHTML = '';
+        Ti1.remove();
+        Ti2.remove();
+        Ti3.remove();
+        Ti4.remove();
+        Ti5.remove();
+        Ti6.remove();
+        Ti7.remove();
+        Ti8.remove();
+        Ti9.remove();
 
         document.getElementById("winner").innerHTML = '';
         document.getElementById("playagain").style.display = "none";
@@ -107,7 +107,7 @@ var boxSelectorVar = (function() {
     function selectBoxVsComp(el) {
         if (el.innerHTML != "") {
             return
-        } else if (player == 'Player 1') {
+        } else if (player == 'Player') {
             el.innerHTML = "X"
         }
     }
@@ -150,10 +150,10 @@ var playerTurnKeeper = (function() {
     function toggleTurnComp() {
         var turnBoxVsComp = document.getElementById("display_turns");
 
-        if (player == 'Player 1') {
+        if (player == 'Player') {
             player = 'Computer'
         } else if (player == 'Computer') {
-            player = 'Player 1'
+            player = 'Player'
         }
 
         turnBoxVsComp.innerHTML = `It's ${player}'s turn!`;
@@ -200,8 +200,9 @@ var computerRandomChoice = (function() {
 
     // creates array of remaining boxes from their ID #
     function remainingBoxes() {
+        testArray = [];
         for (let i = 0; i < searchEles.length; i++) {
-            if (searchEles[i].innerHTML === '') {
+            if (searchEles[i].innerHTML === '' && searchEles[i].id !== "display_turns") {
                 testArray.push(searchEles[i].id.slice(5));    
             }
         }
@@ -212,9 +213,9 @@ var computerRandomChoice = (function() {
     function compRNGSelection() {
         const random = Math.floor(Math.random() * testArray.length);
         console.log(random);
-        testArray[random]
-        //take value of the index from randomly selected # and change
-        //innerHTML to computer's X or O
+        console.table(testArray);
+        console.log(`Computer chose tile ${testArray[random]}!`);
+        document.getElementById(`tile_${testArray[random]}`).innerHTML = "O";
     }
 
     return {
@@ -242,14 +243,14 @@ compOppSelect.addEventListener('click', () => {
     opponent = 'computer';
     gameBoard.displayTiles();
     Player1 = Player('hi');
-    Player2 = opponent;
-    /* playerTurnKeeper.selectStartingPlayerComp(); */
     if (playerTurnKeeper.selectStartingPlayerComp() == 'Computer') {
         computerRandomChoice.remainingBoxes();
         computerRandomChoice.compRNGSelection();
+        playerTurnKeeper.toggleTurnComp();
+    } else if (playerTurnKeeper.selectStartingPlayerComp() == 'Player') {
+        console.log(player);
+        return player
     }
-    /* computerRandomChoice.remainingBoxes();
-    computerRandomChoice.compRNGSelection(); */
 })
 
 
@@ -286,7 +287,13 @@ boxSelect.addEventListener('click', (e) => {
             if (winningText.innerHTML != "") {
                 return
             } else {
-                playerTurnKeeper.toggleTurnComp()
+                playerTurnKeeper.toggleTurnComp();
+                computerRandomChoice.remainingBoxes();
+                computerRandomChoice.compRNGSelection();
+                gameBoard.checkWin();
+                if (winningText.innerHTML == "") {
+                    playerTurnKeeper.toggleTurnComp();
+                }
             };
         }
     }
@@ -295,4 +302,5 @@ boxSelect.addEventListener('click', (e) => {
 let playItAgainBtn = document.getElementById("playagain")
 playItAgainBtn.addEventListener('click', () => {
     gameResetVar.resetGame();
+    popupPop.poppity();
 })
