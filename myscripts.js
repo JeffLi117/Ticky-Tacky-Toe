@@ -206,7 +206,9 @@ var popupPop = (function() {
     }
 })();
 
+let compBlock = '';
 let testArray = [];
+let playerFilled = [];
 
 var computerRandomChoice = (function() {
     'use strict';
@@ -224,18 +226,63 @@ var computerRandomChoice = (function() {
         return testArray;
     }
 
+    function blockThird() {
+        playerFilled = [];
+        for (let i = 0; i < searchEles.length; i++) {
+            if (searchEles[i].innerHTML === 'X' && searchEles[i].id !== "display_turns") {
+                playerFilled.push(searchEles[i].id.slice(5));    
+            }
+        }
+        return playerFilled;
+    }
+
+    function dontLose() {
+
+        var corner1 = document.getElementById("tile_1")
+        var mid1 = document.getElementById("tile_2")
+        var corner2 = document.getElementById("tile_3")
+        var mid2 = document.getElementById("tile_4")
+        var center = document.getElementById("tile_5")
+        var mid3 = document.getElementById("tile_6")
+        var corner3 = document.getElementById("tile_7")
+        var mid4 = document.getElementById("tile_8")
+        var corner4 = document.getElementById("tile_9")
+
+        if (
+            ((corner1.innerHTML == mid1.innerHTML) && (corner1.innerHTML !== '' && mid1.innerHTML !== '')) || 
+            ((mid3.innerHTML == corner4.innerHTML) && (corner4.innerHTML !== '' && mid3.innerHTML !== '')) || 
+            ((center.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && center.innerHTML !== '')) && corner2.innerHTML == ''
+        ) {
+            compBlock = 3;
+            console.log("dontLose was triggered for tile 3")
+            // need to make it so that computer does NOT try to keep filling in tile 3 after it's been populated...
+        }
+        return compBlock
+    }
+
+    // Computer is "O"
+    
     // chooses a random # from the remaining boxes above
     function compRNGSelection() {
         const random = Math.floor(Math.random() * testArray.length);
         /* console.log(random);
         console.table(testArray); 
         console.log(`Computer chose tile ${testArray[random]}!`);*/
+        if (compBlock !== '') {
+            document.getElementById(`tile_${compBlock}`).innerHTML = "O";
+            console.log(`The computer purposefully selected tile_${compBlock}`);
+            compBlock = '';
+        } else {
         document.getElementById(`tile_${testArray[random]}`).innerHTML = "O";
+        console.log(`The computer randomly selected tile_${testArray[random]}`);
+        }
     }
 
     return {
         remainingBoxes: remainingBoxes,
         compRNGSelection: compRNGSelection,
+        blockThird: blockThird,
+        dontLose: dontLose,
     }
 })();
 
@@ -267,15 +314,6 @@ twoNamesEnteredStart.addEventListener('click', () => {
     }
 })
 
-/* function poppity() {
-        document.getElementById("container-popup").style.display = "inline";
-        document.getElementById("popup").style.display = "flex";
-    }
-
-    function enteringNamePop() {
-        popUpForNameEntry.style.display = "inline";
-    } */
-
 compOppSelect.addEventListener('click', () => {
     document.getElementById("container-popup").style.display = "none";
     document.getElementById("popup").style.display = "none";
@@ -284,9 +322,12 @@ compOppSelect.addEventListener('click', () => {
     Player1 = Player('testname');
     playerTurnKeeper.selectStartingPlayerComp();
     if (player == 'Computer') {
-        computerRandomChoice.remainingBoxes();
-        computerRandomChoice.compRNGSelection();
-        playerTurnKeeper.toggleTurnComp();
+        const handle = setTimeout(() => {
+            computerRandomChoice.remainingBoxes();
+            computerRandomChoice.compRNGSelection();
+            playerTurnKeeper.toggleTurnComp();
+            clearTimeout(handle);
+          }, 2500);
     } else if (player == 'Player') {
         return
     } else {
@@ -328,13 +369,24 @@ boxSelect.addEventListener('click', (e) => {
             if (winningText.innerHTML != "") {
                 return
             } else {
-                playerTurnKeeper.toggleTurnComp();
-                computerRandomChoice.remainingBoxes();
-                computerRandomChoice.compRNGSelection();
-                gameBoard.checkWin();
-                if (winningText.innerHTML == "") {
+
+                const handle = setTimeout(() => {
                     playerTurnKeeper.toggleTurnComp();
-                }
+                    computerRandomChoice.blockThird();
+                    console.table(playerFilled);
+                    computerRandomChoice.remainingBoxes();
+                    computerRandomChoice.dontLose();
+                    computerRandomChoice.compRNGSelection();
+                    gameBoard.checkWin();
+                    if (winningText.innerHTML == "") {
+                        playerTurnKeeper.toggleTurnComp();
+                    }
+                    clearTimeout(handle);
+                }, 2000);
+
+                /* if (winningText.innerHTML == "") {
+                    playerTurnKeeper.toggleTurnComp();
+                } */
             };
         }
     }
