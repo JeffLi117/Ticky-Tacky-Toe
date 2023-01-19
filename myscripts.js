@@ -199,10 +199,15 @@ var popupPop = (function() {
     function enteringNamePop() {
         document.getElementById("enter-names").style.display = "flex";
     }
+
+    function hideStartGame() {
+        document.getElementById("newgame").style.visibility = "hidden";
+    }
     
     return {
         poppity: poppity,
         enteringNamePop: enteringNamePop,
+        hideStartGame: hideStartGame,
     }
 })();
 
@@ -310,17 +315,10 @@ var computerRandomChoice = (function() {
         }
         return compBlock
     }
-
-    // Computer is "O"
-    // Need logic for computer to assertively take win if present
-    // *needs to surpass dontLose priority
     
     // chooses a random # from the remaining boxes above
     function compRNGSelection() {
         const random = Math.floor(Math.random() * testArray.length);
-        /* console.log(random);
-        console.table(testArray); 
-        console.log(`Computer chose tile ${testArray[random]}!`);*/
         if (compBlock !== '') {
             document.getElementById(`tile_${compBlock}`).innerHTML = "O";
             console.log(`The computer purposefully selected tile_${compBlock}`);
@@ -355,6 +353,7 @@ twoNamesEnteredStart.addEventListener('click', () => {
     if (P1name == '' || P2name == '') {
         alert("Please enter names for both players!")
     } else {
+        popupPop.hideStartGame();
         Player1 = Player(`${P1name}`);
         Player2 = Player(`${P2name}`);
         console.log(Player1.playerName + " vs " + Player2.playerName);
@@ -368,6 +367,7 @@ twoNamesEnteredStart.addEventListener('click', () => {
 })
 
 compOppSelect.addEventListener('click', () => {
+    popupPop.hideStartGame();
     document.getElementById("container-popup").style.display = "none";
     document.getElementById("popup").style.display = "none";
     opponent = 'computer';
@@ -417,30 +417,30 @@ boxSelect.addEventListener('click', (e) => {
                 playerTurnKeeper.toggleTurn()
             };
         } else if (opponent == "computer") {
-            boxSelectorVar.selectBoxVsComp(e.target); 
-            gameBoard.checkWin();
-            if (winningText.innerHTML != "") {
+            if (player == "Computer") {
                 return
             } else {
-
-                const handle = setTimeout(() => {
+                boxSelectorVar.selectBoxVsComp(e.target); 
+                gameBoard.checkWin();
+                if (winningText.innerHTML != "") {
+                    return
+                } else {
                     playerTurnKeeper.toggleTurnComp();
-                    computerRandomChoice.blockThird();
-                    console.table(playerFilled);
-                    computerRandomChoice.remainingBoxes();
-                    computerRandomChoice.dontLose();
-                    computerRandomChoice.compRNGSelection();
-                    gameBoard.checkWin();
-                    if (winningText.innerHTML == "") {
-                        playerTurnKeeper.toggleTurnComp();
-                    }
-                    clearTimeout(handle);
-                }, 2000);
 
-                /* if (winningText.innerHTML == "") {
-                    playerTurnKeeper.toggleTurnComp();
-                } */
-            };
+                    const handle = setTimeout(() => {
+                        computerRandomChoice.blockThird();
+                        console.table(playerFilled);
+                        computerRandomChoice.remainingBoxes();
+                        computerRandomChoice.dontLose();
+                        computerRandomChoice.compRNGSelection();
+                        gameBoard.checkWin();
+                        if (winningText.innerHTML == "") {
+                            playerTurnKeeper.toggleTurnComp();
+                        }
+                        clearTimeout(handle);
+                    }, 2000);
+                };
+            }
         }
     }
 })

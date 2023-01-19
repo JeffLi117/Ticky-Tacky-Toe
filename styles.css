@@ -5,6 +5,7 @@
 h1 {
     text-align: center;
     color: red;
+    text-shadow: 4px 4px 11px rgba(47, 43, 255, 0.6);
 }
 
 #newgame {
@@ -15,7 +16,29 @@ h1 {
     padding: 0.7rem;
     display: block;
     margin: 1rem auto;
+    /* transform: rotateY(360deg);
+    transition: 2s; */
+
+    -webkit-animation: anim 4s infinite linear;
+    animation: anim 4s infinite linear;
 }
+
+@-webkit-keyframes anim {
+    from {-webkit-transform: rotateY(0deg);}
+    to {-webkit-transform: rotateY(360deg);}
+}
+
+@keyframes anim {
+    from {transform: rotateY(0deg);}
+    to {transform: rotateY(360deg);}
+}
+
+
+/* #newgame:hover {
+    transform: rotateY(360deg);
+    transition: 2s;
+    box-shadow: -5px 5px 5px rgb(255, 46, 46);
+} */
 
 
 #gameboard {
