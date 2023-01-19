@@ -352,6 +352,8 @@ twoNamesEnteredStart.addEventListener('click', () => {
     var P2name = document.getElementById("P2name").value
     if (P1name == '' || P2name == '') {
         alert("Please enter names for both players!")
+    } else if (P1name == P2name) {
+        alert("Please enter 2 unique names.")
     } else {
         popupPop.hideStartGame();
         Player1 = Player(`${P1name}`);
