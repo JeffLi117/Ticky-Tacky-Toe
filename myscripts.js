@@ -236,6 +236,7 @@ var computerRandomChoice = (function() {
         return playerFilled;
     }
 
+    // logic for computer to not lose immediately, if possible
     function dontLose() {
 
         var corner1 = document.getElementById("tile_1")
@@ -249,18 +250,70 @@ var computerRandomChoice = (function() {
         var corner4 = document.getElementById("tile_9")
 
         if (
-            ((corner1.innerHTML == mid1.innerHTML) && (corner1.innerHTML !== '' && mid1.innerHTML !== '')) || 
+            corner2.innerHTML === '' && (((corner1.innerHTML == mid1.innerHTML) && (corner1.innerHTML !== '' && mid1.innerHTML !== '')) || 
             ((mid3.innerHTML == corner4.innerHTML) && (corner4.innerHTML !== '' && mid3.innerHTML !== '')) || 
-            ((center.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && center.innerHTML !== '')) && corner2.innerHTML == ''
+            ((center.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && center.innerHTML !== '')))
         ) {
             compBlock = 3;
             console.log("dontLose was triggered for tile 3")
-            // need to make it so that computer does NOT try to keep filling in tile 3 after it's been populated...
+        } else if (
+            corner1.innerHTML === '' && (((corner2.innerHTML == mid1.innerHTML) && (corner2.innerHTML !== '' && mid1.innerHTML !== '')) || 
+            ((mid2.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && mid2.innerHTML !== '')) || 
+            ((center.innerHTML == corner4.innerHTML) && (corner4.innerHTML !== '' && center.innerHTML !== '')))
+        ) {
+            compBlock = 1;
+            console.log("dontLose was triggered for tile 1")
+        } else if (
+            corner3.innerHTML === '' && (((corner1.innerHTML == mid2.innerHTML) && (corner1.innerHTML !== '' && mid2.innerHTML !== '')) || 
+            ((mid4.innerHTML == corner4.innerHTML) && (corner4.innerHTML !== '' && mid4.innerHTML !== '')) || 
+            ((center.innerHTML == corner2.innerHTML) && (corner2.innerHTML !== '' && center.innerHTML !== '')))
+        ) {
+            compBlock = 7;
+            console.log("dontLose was triggered for tile 7")
+        } else if (
+            corner4.innerHTML === '' && (((corner2.innerHTML == mid3.innerHTML) && (corner2.innerHTML !== '' && mid3.innerHTML !== '')) || 
+            ((mid4.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && mid4.innerHTML !== '')) || 
+            ((center.innerHTML == corner1.innerHTML) && (corner1.innerHTML !== '' && center.innerHTML !== '')))
+        ) {
+            compBlock = 9;
+            console.log("dontLose was triggered for tile 9")
+        } else if (
+            mid1.innerHTML === '' && (((corner1.innerHTML == corner2.innerHTML) && (corner2.innerHTML !== '' && corner1.innerHTML !== '')) ||  
+            ((center.innerHTML == mid4.innerHTML) && (mid4.innerHTML !== '' && center.innerHTML !== '')))
+        ) {
+            compBlock = 2;
+            console.log("dontLose was triggered for tile 2")
+        } else if (
+            mid4.innerHTML === '' && (((corner4.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && corner4.innerHTML !== '')) ||  
+            ((center.innerHTML == mid1.innerHTML) && (mid1.innerHTML !== '' && center.innerHTML !== '')))
+        ) {
+            compBlock = 8;
+            console.log("dontLose was triggered for tile 8")
+        } else if (
+            mid2.innerHTML === '' && (((corner1.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && corner1.innerHTML !== '')) ||  
+            ((center.innerHTML == mid3.innerHTML) && (mid3.innerHTML !== '' && center.innerHTML !== '')))
+        ) {
+            compBlock = 4;
+            console.log("dontLose was triggered for tile 4")
+        } else if (
+            mid3.innerHTML === '' && (((corner4.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && corner4.innerHTML !== '')) ||  
+            ((center.innerHTML == mid2.innerHTML) && (mid2.innerHTML !== '' && center.innerHTML !== '')))
+        ) {
+            compBlock = 6;
+            console.log("dontLose was triggered for tile 6")
+        } else if (
+            center.innerHTML === '' && (((corner1.innerHTML == corner3.innerHTML) && (corner3.innerHTML !== '' && corner1.innerHTML !== '')) || ((corner2.innerHTML == corner4.innerHTML) && (corner2.innerHTML !== '' && corner4.innerHTML !== '')) || 
+            ((mid1.innerHTML == mid4.innerHTML) && (mid4.innerHTML !== '' && mid1.innerHTML !== '')) || ((mid2.innerHTML == mid3.innerHTML) && (mid3.innerHTML !== '' && mid2.innerHTML !== '')))
+        ) {
+            compBlock = 5;
+            console.log("dontLose was triggered for tile 5")
         }
         return compBlock
     }
 
     // Computer is "O"
+    // Need logic for computer to assertively take win if present
+    // *needs to surpass dontLose priority
     
     // chooses a random # from the remaining boxes above
     function compRNGSelection() {
